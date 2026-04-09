@@ -3,9 +3,15 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\CashierController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ReportController; // Import Controller Laporan
 use App\Models\Category;
 use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +33,8 @@ Route::get('/', function () {
     return view('welcome', compact('categories', 'bestSellers'));
 });
 
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes
@@ -35,42 +43,44 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     
-    // Dashboard (SUDAH DIPERBAIKI)
-    Route::get('/dashboard', function () {
-        $totalCategories = Category::count();
-        $totalMenus = Menu::count();
-        $totalBestSeller = Menu::where('is_best_seller', true)->count();
-        $totalActiveMenus = Menu::where('is_active', true)->count();
-
-        $latestMenus = Menu::with('category')->latest()->take(5)->get();
-        $categories = Category::latest()->take(6)->get();
-        $bestSellers = Menu::where('is_best_seller', true)->latest()->take(4)->get();
-
-        return view('dashboard', compact(
-            'totalCategories',
-            'totalMenus',
-            'totalBestSeller',
-            'totalActiveMenus',
-            'latestMenus',
-            'categories',
-            'bestSellers'
-        ));
-    })->name('dashboard');
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Resource Management (Categories & Menus)
+    // Resource Management (Menu & Kategori)
     Route::resource('categories', CategoryController::class);
     Route::resource('menus', MenuController::class);
-});
 
-/*
-|--------------------------------------------------------------------------
-| Auth Routes (Breeze/Jetstream)
-|--------------------------------------------------------------------------
-*/
+    // Order History Management (Riwayat Pesanan Umum)
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
+    // --- LAPORAN PENJUALAN & EXCEL ---
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/export/excel', [ReportController::class, 'exportExcel'])->name('export.excel');
+    });
+
+    // Reviews (Admin)
+    Route::get('/admin/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+
+    // Cashier System
+    Route::prefix('cashier')->name('cashier.')->group(function () {
+        Route::get('/', [CashierController::class, 'index'])->name('index');
+        Route::post('/add/{id}', [CashierController::class, 'addToCart'])->name('add');
+        Route::post('/increase/{id}', [CashierController::class, 'increaseQty'])->name('increase');
+        Route::post('/decrease/{id}', [CashierController::class, 'decreaseQty'])->name('decrease');
+        Route::delete('/remove/{id}', [CashierController::class, 'removeFromCart'])->name('remove');
+        Route::delete('/clear', [CashierController::class, 'clearCart'])->name('clear');
+
+        // Checkout & Order Routes
+        Route::post('/checkout', [CashierController::class, 'checkout'])->name('checkout');
+        Route::get('/order/{order}', [CashierController::class, 'showOrder'])->name('order.show');
+    });
+});
 
 require __DIR__.'/auth.php';
