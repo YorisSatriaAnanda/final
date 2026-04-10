@@ -2,46 +2,64 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" class="space-y-6" onsubmit="handleLoginSubmit(this)">
         @csrf
 
         <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="group">
+            <x-input-label for="email" :value="__('Email')" class="text-white/80 group-focus-within:text-red-500 transition-colors duration-300 font-semibold text-sm uppercase tracking-widest pl-1" />
+            <div class="relative mt-2">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-red-500 transition-colors duration-300">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </div>
+                <input id="email" class="block w-full bg-white/[0.03] border-white/10 text-white focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 rounded-2xl py-4 pl-12 pr-4 transition-all duration-300 placeholder:text-gray-600" 
+                        type="email" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="admin@mekarjaya.com" />
+            </div>
+            <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-200 bg-red-900/40 px-4 py-2 rounded-xl border border-red-500/20 text-xs italic" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="group mt-6">
+            <x-input-label for="password" :value="__('Password')" class="text-white/80 group-focus-within:text-red-500 transition-colors duration-300 font-semibold text-sm uppercase tracking-widest pl-1" />
+            <div class="relative mt-2">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-red-500 transition-colors duration-300">
+                    <i data-lucide="lock" class="w-5 h-5"></i>
+                </div>
+                <input id="password" class="block w-full bg-white/[0.03] border-white/10 text-white focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 rounded-2xl py-4 pl-12 pr-4 transition-all duration-300 placeholder:text-gray-600"
+                                type="password"
+                                name="password"
+                                required autocomplete="current-password" placeholder="••••••••" />
+            </div>
+            <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-200 bg-red-900/40 px-4 py-2 rounded-xl border border-red-500/20 text-xs italic" />
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+        <div class="pt-4">
+            <button id="login-btn" type="submit" class="group relative w-full flex justify-center items-center gap-3 bg-red-700 hover:bg-red-600 text-white py-5 text-lg font-bold rounded-2xl shadow-[0_15px_30px_-5px_rgba(185,28,28,0.4)] transition-all duration-500 transform hover:-translate-y-1 active:scale-[0.98] overflow-hidden">
+                <span id="btn-text" class="relative z-10 transition-all duration-300">{{ __('Masuk ke Admin') }}</span>
+                <i id="btn-icon" data-lucide="arrow-right" class="w-5 h-5 relative z-10 transition-all duration-300 group-hover:translate-x-1"></i>
+                
+                {{-- Shine effect --}}
+                <div class="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-[25deg] -translate-x-[150%] group-hover:translate-x-[250%] transition-all duration-1000 ease-in-out"></div>
+            </button>
         </div>
     </form>
+
+    <script>
+        function handleLoginSubmit(form) {
+            const btn = document.getElementById('login-btn');
+            const btnText = document.getElementById('btn-text');
+            const btnIcon = document.getElementById('btn-icon');
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            btnText.innerText = 'Memproses...';
+            btnIcon.style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
 </x-guest-layout>
