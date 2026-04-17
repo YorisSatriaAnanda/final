@@ -93,13 +93,6 @@
             {{-- Main Content --}}
             <main class="flex-1 p-6 lg:p-10 transition-all duration-300">
 
-                {{-- Toggle Sidebar Button (Desktop Only - Cashier Only) --}}
-                @if(request()->routeIs('cashier.*'))
-                <button id="sidebar-toggle" class="hidden lg:flex items-center justify-center w-12 h-12 bg-white shadow-md rounded-2xl mb-8 hover:bg-red-50 hover:text-red-700 transition border border-gray-100 group">
-                    <i data-lucide="menu" class="w-6 h-6 transition-transform group-hover:scale-110"></i>
-                </button>
-                @endif
-
                 {{-- Mobile top --}}
                 <div class="lg:hidden bg-white rounded-3xl p-4 shadow-md mb-6 flex items-center justify-between">
                     <div class="flex items-center gap-3">
@@ -143,6 +136,36 @@
                         sidebar.style.setProperty('display', 'none', 'important');
                     }
                 });
+            }
+
+            // --- Logika Format Rupiah Otomatis ---
+            const rupiahInputs = document.querySelectorAll('.rupiah-input');
+            
+            rupiahInputs.forEach(input => {
+                // Format saat inisialisasi (jika ada nilai awal)
+                if (input.value) {
+                    input.value = formatRupiah(input.value);
+                }
+
+                input.addEventListener('input', function(e) {
+                    this.value = formatRupiah(this.value);
+                });
+            });
+
+            function formatRupiah(angka) {
+                let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    let separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return rupiah;
             }
         });
     </script>

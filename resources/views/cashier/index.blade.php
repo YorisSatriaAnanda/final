@@ -2,9 +2,16 @@
 
 @section('content')
 
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Kasir / POS</h1>
-        <p class="text-gray-500 mt-1">Pilih menu dan kelola pesanan customer.</p>
+    <div class="mb-8 flex items-center gap-4">
+        {{-- Sidebar Toggle --}}
+        <button id="sidebar-toggle" class="hidden lg:flex items-center justify-center w-12 h-12 bg-white shadow-sm rounded-2xl hover:bg-red-50 hover:text-red-700 transition border border-gray-100 text-gray-400 group">
+            <i data-lucide="menu" class="w-6 h-6 transition-transform group-hover:scale-110"></i>
+        </button>
+        
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Kasir / POS</h1>
+            <p class="text-gray-500 mt-1 uppercase tracking-wider text-[11px] font-bold">Pilih menu dan kelola pesanan customer.</p>
+        </div>
     </div>
 
     @if(session('success'))
@@ -145,7 +152,7 @@
         {{-- RIGHT: CART --}}
         <div class="space-y-6">
 
-            <div class="bg-white rounded-[30px] p-6 shadow-md sticky top-6">
+            <div class="bg-white rounded-[30px] p-6 shadow-md sticky top-6 max-h-[calc(100vh-48px)] overflow-y-auto border border-gray-100 custom-scrollbar">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-900">Keranjang</h2>
 
@@ -271,22 +278,22 @@
                                     </div>
                                 </label>
                             </div>
-                            <input type="number"
+                            <input type="text"
                                    id="discount_input"
                                    name="discount_value"
                                    value="{{ old('discount_value', 0) }}"
-                                   placeholder="Contoh: 5000 atau 10"
-                                   class="w-full rounded-2xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                                   placeholder="Contoh: 5.000 atau 10"
+                                   class="w-full rupiah-input rounded-2xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none">
                         </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Uang Bayar</label>
-                            <input type="number"
+                            <input type="text"
                                    id="paid_amount_input"
                                    name="paid_amount"
                                    value="{{ old('paid_amount') }}"
-                                   placeholder="Contoh: 50000"
-                                   class="w-full rounded-2xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                                   placeholder="Contoh: 50.000"
+                                   class="w-full rupiah-input rounded-2xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none">
                         </div>
 
                         {{-- Total Akhir & Kembalian Display --}}
@@ -321,14 +328,13 @@
             const finalTotalDisplay = document.getElementById('final_total_display');
             const changeDisplay = document.getElementById('change_display');
 
-            function formatRupiah(number) {
-                return 'Rp ' + number.toLocaleString('id-ID');
-            }
-
             function updateCalculations() {
-                const discountValue = parseFloat(discountInput.value) || 0;
+                const discountRaw = discountInput.value.replace(/\./g, '') || 0;
+                const discountValue = parseFloat(discountRaw) || 0;
                 const discountType = document.querySelector('input[name="discount_type"]:checked').value;
-                const paidAmount = parseInt(paidAmountInput.value) || 0;
+                
+                const paidRaw = paidAmountInput.value.replace(/\./g, '') || 0;
+                const paidAmount = parseInt(paidRaw) || 0;
                 
                 let discountAmount = 0;
                 if (discountType === 'percent') {
@@ -340,8 +346,24 @@
                 const finalTotal = subtotal - discountAmount;
                 const change = paidAmount - finalTotal;
 
-                finalTotalDisplay.innerText = formatRupiah(Math.max(0, finalTotal));
-                changeDisplay.innerText = formatRupiah(Math.max(0, change));
+                finalTotalDisplay.innerText = formatRupiah(Math.max(0, finalTotal).toString());
+                changeDisplay.innerText = formatRupiah(Math.max(0, change).toString());
+            }
+
+            function formatRupiah(angka) {
+                let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                    split = number_string.split(','),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                if (ribuan) {
+                    let separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                }
+
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return 'Rp ' + rupiah;
             }
 
             discountInput.addEventListener('input', updateCalculations);

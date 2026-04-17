@@ -46,11 +46,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label class="block text-gray-700 font-medium mb-2">Harga</label>
-                    <input type="number"
+                    <input type="text"
                            name="price"
                            value="{{ old('price') }}"
-                           placeholder="Contoh: 18000"
-                           class="w-full rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                           placeholder="Contoh: 18.000"
+                           class="w-full rupiah-input rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
                 </div>
 
                 <div>
@@ -79,12 +79,11 @@
 
                     <div>
                         <label class="block text-gray-700 font-medium mb-2">Jumlah Diskon</label>
-                        <input type="number"
+                        <input type="text"
                                name="discount_amount"
                                value="{{ old('discount_amount', 0) }}"
-                               min="0"
                                placeholder="0"
-                               class="w-full rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none bg-white">
+                               class="w-full rupiah-input rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none bg-white">
                     </div>
                 </div>
             </div>

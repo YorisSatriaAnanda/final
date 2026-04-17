@@ -147,6 +147,12 @@ class CashierController extends Controller
      */
     public function checkout(Request $request)
     {
+        // Bersihkan titik ribuan
+        $request->merge([
+            'paid_amount' => str_replace('.', '', $request->paid_amount),
+            'discount_value' => str_replace('.', '', $request->discount_value),
+        ]);
+
         $request->validate([
             'customer_name' => 'nullable|string|max:255',
             'payment_method' => 'required|in:cash,qris,debit,transfer',

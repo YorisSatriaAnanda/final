@@ -45,6 +45,12 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
+        // Bersihkan titik ribuan
+        $request->merge([
+            'price' => str_replace('.', '', $request->price),
+            'discount_amount' => str_replace('.', '', $request->discount_amount),
+        ]);
+
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
@@ -88,6 +94,12 @@ class MenuController extends Controller
 
     public function update(Request $request, Menu $menu)
     {
+        // Bersihkan titik ribuan
+        $request->merge([
+            'price' => str_replace('.', '', $request->price),
+            'discount_amount' => str_replace('.', '', $request->discount_amount),
+        ]);
+
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
