@@ -67,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Reviews (Admin)
     Route::get('/admin/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+    Route::delete('/admin/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
 
     // Cashier System
     Route::prefix('cashier')->name('cashier.')->group(function () {

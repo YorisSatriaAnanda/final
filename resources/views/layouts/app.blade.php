@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Mekarjaya Coffee') }}</title>
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo.jpg') }}" />
 
     {{-- Font --}}
     <link rel="preconnect" href="https://fonts.bunny.net">

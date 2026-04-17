@@ -3,23 +3,18 @@
 @section('content')
 <style>
     @media print {
-        /* Sembunyikan elemen UI admin */
-        aside, 
-        nav, 
-        .lg\:hidden, 
-        .flex.gap-3, 
-        button, 
-        a.bg-red-700,
-        .text-gray-500.mt-1 {
+        /* Hide UI elements */
+        aside, nav, .lg\:hidden, .flex.gap-3, button, a.bg-red-700, .text-gray-500.mt-1 {
             display: none !important;
         }
 
-        /* Reset layout utama */
+        /* Reset layout for 58mm */
         body, .min-h-screen, .flex, main {
             background: white !important;
             margin: 0 !important;
             padding: 0 !important;
             display: block !important;
+            width: 58mm !important;
         }
 
         .max-w-5xl {
@@ -28,31 +23,84 @@
             padding: 0 !important;
         }
 
-        /* Rapihkan kartu invoice */
+        /* Receipt styling */
         .bg-white {
             box-shadow: none !important;
             border: none !important;
             border-radius: 0 !important;
+            width: 58mm !important;
         }
 
         .p-8 {
-            padding: 1.5rem !important;
+            padding: 5mm 2mm !important;
         }
 
-        /* Hapus judul halaman */
-        h1.text-3xl {
-            display: none !important;
+        /* Typography for thermal paper */
+        h1, h2, h3, p, span, td, th {
+            font-family: 'Courier New', Courier, monospace !important;
+            color: black !important;
         }
 
-        /* Paksa warna cetak */
+        h2.text-3xl {
+            font-size: 14pt !important;
+            text-align: center !important;
+            margin-bottom: 2mm !important;
+        }
+
+        .text-3xl.font-bold, .text-xl.font-bold {
+            font-size: 11pt !important;
+        }
+
+        .text-sm, .text-gray-500 {
+            font-size: 9pt !important;
+        }
+
+        table {
+            width: 100% !important;
+            font-size: 9pt !important;
+            border-collapse: collapse !important;
+        }
+
+        th, td {
+            padding: 1mm 0 !important;
+            border-bottom: 1px dashed #000 !important;
+        }
+
+        .border-b {
+            border-bottom: 1px dashed #000 !important;
+        }
+
+        .flex.justify-between {
+            display: flex !important;
+            justify-content: space-between !important;
+            margin-bottom: 1mm !important;
+        }
+
+        /* Force black text for contrast */
         * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+            color: black !important;
         }
 
         @page {
-            margin: 1.5cm;
+            size: 58mm auto;
+            margin: 0;
         }
+
+        /* Divider */
+        .receipt-divider {
+            border-top: 1px dashed #000;
+            margin: 3mm 0;
+        }
+
+        .print-only {
+            display: block !important;
+        }
+    }
+
+    .print-only {
+        display: none;
     }
 </style>
 
@@ -169,11 +217,15 @@
                             <span class="font-semibold">Rp {{ number_format($order->paid_amount, 0, ',', '.') }}</span>
                         </div>
 
-                        <div class="flex justify-between text-red-700 text-xl font-bold">
-                            <span>Kembalian</span>
-                            <span>Rp {{ number_format($order->change_amount, 0, ',', '.') }}</span>
-                        </div>
                     </div>
+                </div>
+
+                {{-- Footer Struk (Print Only) --}}
+                <div class="print-only mt-8 text-center" style="font-family: 'Courier New', Courier, monospace; font-size: 9pt;">
+                    <p class="receipt-divider"></p>
+                    <p class="font-bold">Terima Kasih!</p>
+                    <p>Atas Kunjungan Anda</p>
+                    <p>{{ date('d/m/Y H:i') }}</p>
                 </div>
             </div>
         </div>

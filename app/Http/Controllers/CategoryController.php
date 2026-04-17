@@ -11,9 +11,14 @@ class CategoryController extends Controller
     /**
      * Menampilkan daftar kategori.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::latest()->get();
+        $search = $request->input('search');
+
+        $categories = Category::when($search, function ($query, $search) {
+            return $query->where('name', 'like', "%{$search}%");
+        })->latest()->paginate(10)->withQueryString();
+
         return view('categories.index', compact('categories'));
     }
 

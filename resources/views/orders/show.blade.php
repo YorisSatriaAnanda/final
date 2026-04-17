@@ -1,6 +1,108 @@
 @extends('layouts.admin')
 
 @section('content')
+<style>
+    @media print {
+        /* Hide UI elements */
+        aside, nav, .lg\:hidden, .flex.gap-3, button, a.bg-gray-200, .text-gray-500.mt-1 {
+            display: none !important;
+        }
+
+        /* Reset layout for 58mm */
+        body, .min-h-screen, .flex, main {
+            background: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+            width: 58mm !important;
+        }
+
+        .max-w-5xl {
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Receipt styling */
+        .bg-white {
+            box-shadow: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+            width: 58mm !important;
+        }
+
+        .p-8 {
+            padding: 5mm 2mm !important;
+        }
+
+        /* Typography for thermal paper */
+        h1, h2, h3, p, span, td, th {
+            font-family: 'Courier New', Courier, monospace !important;
+            color: black !important;
+        }
+
+        h2.text-3xl {
+            font-size: 14pt !important;
+            text-align: center !important;
+            margin-bottom: 2mm !important;
+        }
+
+        .text-3xl.font-bold, .text-xl.font-bold {
+            font-size: 11pt !important;
+        }
+
+        .text-sm, .text-gray-500 {
+            font-size: 9pt !important;
+        }
+
+        table {
+            width: 100% !important;
+            font-size: 9pt !important;
+            border-collapse: collapse !important;
+        }
+
+        th, td {
+            padding: 1mm 0 !important;
+            border-bottom: 1px dashed #000 !important;
+        }
+
+        .border-b {
+            border-bottom: 1px dashed #000 !important;
+        }
+
+        .flex.justify-between {
+            display: flex !important;
+            justify-content: space-between !important;
+            margin-bottom: 1mm !important;
+        }
+
+        /* Force black text for contrast */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color: black !important;
+        }
+
+        @page {
+            size: 58mm auto;
+            margin: 0;
+        }
+
+        /* Divider */
+        .receipt-divider {
+            border-top: 1px dashed #000;
+            margin: 3mm 0;
+        }
+
+        .print-only {
+            display: block !important;
+        }
+    }
+
+    .print-only {
+        display: none;
+    }
+</style>
 
     <div class="max-w-5xl mx-auto">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -107,11 +209,15 @@
                             <span class="font-semibold">Rp {{ number_format($order->paid_amount, 0, ',', '.') }}</span>
                         </div>
 
-                        <div class="flex justify-between text-red-700 text-xl font-bold border-t pt-4">
-                            <span>Kembalian</span>
-                            <span>Rp {{ number_format($order->change_amount, 0, ',', '.') }}</span>
-                        </div>
                     </div>
+                </div>
+
+                {{-- Footer Struk (Print Only) --}}
+                <div class="print-only mt-8 text-center" style="font-family: 'Courier New', Courier, monospace; font-size: 9pt;">
+                    <p class="receipt-divider"></p>
+                    <p class="font-bold">Terima Kasih!</p>
+                    <p>Atas Kunjungan Anda</p>
+                    <p>{{ date('d/m/Y H:i') }}</p>
                 </div>
             </div>
         </div>

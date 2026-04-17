@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Mekarjaya Coffee</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{-- Lucide Icons --}}
@@ -56,8 +57,8 @@
     <nav class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 object-contain">
-                <h1 class="text-2xl font-bold text-red-700 uppercase">Mekarjaya</h1>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-14 h-14 object-contain">
+                <h1 class="text-3xl font-black text-[#DA291C] uppercase tracking-tighter">Mekarjaya</h1>
             </div>
 
             <div class="hidden md:flex items-center gap-8 text-lg">
@@ -321,7 +322,7 @@
                 </form>
 
                 <div class="text-center">
-                    <img src="{{ asset('images/logo-big.png') }}" alt="Logo Besar" class="w-48 mx-auto opacity-80">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo Mekarjaya" class="w-56 mx-auto drop-shadow-2xl">
                 </div>
             </div>
         </div>
@@ -334,8 +335,8 @@
             {{-- Brand info --}}
             <div class="reveal">
                 <div class="flex items-center gap-3 mb-6">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12">
-                    <h2 class="text-3xl font-bold uppercase tracking-widest text-red-500">Mekarjaya</h2>
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-14 h-14">
+                    <h2 class="text-3xl font-bold uppercase tracking-widest text-[#DA291C]">Mekarjaya</h2>
                 </div>
                 <p class="text-gray-400 text-lg leading-relaxed">
                     Lebih dari sekadar kopi. Kami menyajikan kenyamanan dan cerita di setiap cangkir yang Anda nikmati.

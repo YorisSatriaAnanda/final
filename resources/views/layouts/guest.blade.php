@@ -6,6 +6,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="icon" type="image/jpeg" href="{{ asset('images/logo.jpg') }}" />
+        <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/logo.jpg') }}" />
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -39,7 +41,7 @@
                 mix-blend-mode: overlay;
             }
             .logo-glow {
-                filter: drop-shadow(0 0 15px rgba(185, 28, 28, 0.4));
+                filter: drop-shadow(0 0 20px rgba(218, 41, 28, 0.45));
             }
         </style>
     </head>
@@ -53,9 +55,9 @@
             <div class="relative z-10 w-full sm:max-w-md px-4 animate-reveal">
                 <div class="flex flex-col items-center mb-10">
                     <a href="/" class="transition-all hover:scale-110 duration-500 logo-glow">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-28 h-28 object-contain">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-32 h-32 object-contain">
                     </a>
-                    <h1 class="text-red-700 text-4xl font-extrabold mt-6 tracking-[0.2em] uppercase font-serif">Mekarjaya</h1>
+                    <h1 class="text-white text-4xl font-extrabold mt-6 tracking-[0.2em] uppercase font-serif">Mekarjaya</h1>
                 </div>
 
                 <div class="w-full px-8 py-10 glass-panel backdrop-blur-3xl border border-red-500/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden sm:rounded-[3rem]">

@@ -22,8 +22,31 @@
     @endif
 
     <div class="bg-white rounded-[30px] shadow-md overflow-hidden">
-        <div class="p-6 border-b border-gray-100">
+        <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <h2 class="text-xl font-bold text-gray-900">Daftar Menu</h2>
+            <div class="flex flex-col md:flex-row gap-3">
+                <form action="{{ route('menus.index') }}" method="GET" class="flex flex-col md:flex-row gap-3">
+                    <div class="relative">
+                        <select name="category_id" onchange="this.form.submit()"
+                                class="pl-4 pr-10 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all appearance-none bg-white w-full md:w-48">
+                            <option value="">Semua Kategori</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+                    
+                    <div class="relative group">
+                        <input type="text" name="search" value="{{ request('search') }}"
+                               placeholder="Cari menu..."
+                               class="pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all w-full md:w-64">
+                        <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-red-500 transition-colors"></i>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -71,7 +94,23 @@
                                 @endif
                                 Rp {{ number_format($menu->final_price, 0, ',', '.') }}
                             </td>
-                            <td class="px-6 py-4 font-semibold">{{ $menu->stock }}</td>
+                            <td class="px-6 py-4 font-semibold uppercase text-sm">
+                                @if($menu->stock == 0)
+                                    <span class="text-red-700 flex items-center gap-1.5 font-bold py-1.5 px-3 bg-red-100/50 rounded-xl w-fit border border-red-200">
+                                        <i data-lucide="x-circle" class="w-4 h-4"></i>
+                                        Habis
+                                    </span>
+                                @elseif($menu->stock <= 10)
+                                    <span class="text-orange-600 flex items-center gap-1.5 font-bold py-1.5 px-3 bg-orange-100/50 rounded-xl w-fit border border-orange-200">
+                                        <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                                        {{ $menu->stock }} (Menipis)
+                                    </span>
+                                @else
+                                    <span class="text-gray-600 font-bold px-3">
+                                        {{ $menu->stock }}
+                                    </span>
+                                @endif
+                            </td>
 
                             <td class="px-6 py-4">
                                 @if($menu->is_best_seller)
@@ -125,6 +164,8 @@
                     @endforelse
                 </tbody>
             </table>
+        <div class="px-6 py-4 border-t border-gray-100">
+            {{ $menus->links() }}
         </div>
     </div>
 

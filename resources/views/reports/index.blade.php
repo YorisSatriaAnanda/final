@@ -121,12 +121,13 @@
                         @endif
     
                         <div class="flex-1">
-                            <h3 class="font-bold text-gray-900">{{ $item->menu?->name ?? 'Menu Dihapus' }}</h3>
-                            <p class="text-sm text-gray-500">Terjual {{ $item->total_qty }}x</p>
+                            <h3 class="font-bold text-gray-900 leading-tight mb-1">{{ $item->menu?->name ?? 'Menu Dihapus' }}</h3>
+                            <p class="text-lg font-semibold text-gray-900 leading-none">Terjual {{ $item->total_qty }}x</p>
                         </div>
     
-                        <div class="text-right">
-                            <p class="font-bold text-red-700">
+                        <div class="text-right flex flex-col justify-end">
+                            <p class="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-1">Total Nilai</p>
+                            <p class="text-sm font-medium text-gray-400">
                                 Rp {{ number_format($item->total_sales, 0, ',', '.') }}
                             </p>
                         </div>
@@ -155,11 +156,12 @@
                     <div class="p-4 rounded-2xl bg-[#fafafa] hover:shadow transition">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="font-bold text-gray-900">{{ $category->name }}</h3>
-                                <p class="text-sm text-gray-500">Terjual {{ $category->total_qty }} item</p>
+                                <h3 class="font-bold text-gray-900 leading-tight mb-1">{{ $category->name }}</h3>
+                                <p class="text-lg font-semibold text-gray-900 leading-none">Terjual {{ $category->total_qty }} item</p>
                             </div>
-                            <div class="text-right">
-                                <p class="font-bold text-red-700">
+                            <div class="text-right flex flex-col justify-end">
+                                <p class="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-1">Omset</p>
+                                <p class="text-sm font-medium text-gray-400">
                                     Rp {{ number_format($category->total_sales, 0, ',', '.') }}
                                 </p>
                             </div>

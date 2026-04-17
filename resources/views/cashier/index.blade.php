@@ -73,7 +73,7 @@
             {{-- Menu Grid --}}
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 @forelse($menus as $menu) 
-                    <div class="bg-white rounded-[28px] shadow-md overflow-hidden hover:shadow-xl transition">
+                    <div class="bg-white rounded-[28px] shadow-md overflow-hidden hover:shadow-xl transition flex flex-col h-full border border-gray-100">
                         <div class="h-52 bg-gray-100 relative">
                             @if($menu->is_best_seller)
                                 <div class="absolute top-4 left-4 z-10">
@@ -95,38 +95,43 @@
                             @endif
                         </div>
 
-                        <div class="p-5">
-                            <div class="flex items-start justify-between gap-3 mb-3">
-                                <div>
-                                    <p class="text-sm text-gray-500">{{ $menu->category->name }}</p>
-                                    <h3 class="text-xl font-bold text-gray-900">{{ $menu->name }}</h3>
+                        <div class="p-5 flex flex-col flex-1">
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between gap-3 mb-2">
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-widest font-bold text-gray-400">{{ $menu->category->name }}</p>
+                                        <h3 class="text-xl font-bold text-gray-900 leading-tight mt-1">{{ $menu->name }}</h3>
+                                    </div>
                                 </div>
-
-
+    
+                                <p class="text-sm text-gray-500 leading-relaxed mb-4">
+                                    {{ $menu->description ? \Illuminate\Support\Str::limit($menu->description, 60) : 'Tidak ada deskripsi.' }}
+                                </p>
                             </div>
 
-                            <p class="text-sm text-gray-500 mb-4">
-                                {{ \Illuminate\Support\Str::limit($menu->description, 60) }}
-                            </p>
-
-                            <div class="flex items-center justify-between mb-4">
-                                <div>
-                                    @if($menu->discount_amount > 0)
-                                        <p class="text-sm line-through text-red-400">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
-                                    @endif
-                                    <p class="text-red-700 text-xl font-bold">
-                                        Rp {{ number_format($menu->final_price, 0, ',', '.') }}
-                                    </p>
-                                    <p class="text-sm text-gray-500 mt-1">Stok: {{ $menu->stock }}</p>
+                            <div class="mt-auto">
+                                <div class="flex items-center justify-between mb-4 pt-4 border-t border-gray-50">
+                                    <div>
+                                        @if($menu->discount_amount > 0)
+                                            <p class="text-xs line-through text-red-400">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
+                                        @endif
+                                        <p class="text-red-700 text-2xl font-black">
+                                            Rp {{ number_format($menu->final_price, 0, ',', '.') }}
+                                        </p>
+                                        <p class="text-[11px] font-bold uppercase tracking-wider {{ $menu->stock > 10 ? 'text-gray-400' : 'text-red-500' }} mt-1">
+                                            Stok: {{ $menu->stock > 0 ? $menu->stock : 'Habis' }}
+                                        </p>
+                                    </div>
                                 </div>
+    
+                                <form action="{{ route('cashier.add', $menu->id) }}" method="POST">
+                                    @csrf
+                                    <button class="w-full bg-red-700 text-white py-3.5 rounded-2xl hover:bg-red-800 transition shadow-md flex items-center justify-center gap-2 font-bold active:scale-[0.98]">
+                                        <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                                        Tambah
+                                    </button>
+                                </form>
                             </div>
-
-                            <form action="{{ route('cashier.add', $menu->id) }}" method="POST">
-                                @csrf
-                                <button class="w-full bg-red-700 text-white py-3 rounded-2xl hover:bg-red-800 transition shadow-md">
-                                    + Tambah ke Keranjang
-                                </button>
-                            </form>
                         </div>
                     </div>
                 @empty

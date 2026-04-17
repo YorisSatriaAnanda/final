@@ -10,10 +10,31 @@ use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $menus = Menu::with('category')->latest()->get();
-        return view('menus.index', compact('menus'));
+        $search = $request->input('search');
+        $categoryId = $request->input('category_id');
+
+        $menus = Menu::with('category')
+            ->when($search, function ($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('description', 'like', "%{$search}%")
+                      ->orWhereHas('category', function ($query) use ($search) {
+                          $query->where('name', 'like', "%{$search}%");
+                      });
+                });
+            })
+            ->when($categoryId, function ($query, $categoryId) {
+                return $query->where('category_id', $categoryId);
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        $categories = Category::orderBy('name')->get();
+
+        return view('menus.index', compact('menus', 'categories'));
     }
 
     public function create()

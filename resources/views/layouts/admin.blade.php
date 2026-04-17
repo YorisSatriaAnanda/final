@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Mekarjaya Coffee</title>
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo.jpg') }}" />
+    <link rel="shortcut icon" type="image/jpeg" href="{{ asset('images/logo.jpg') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -16,12 +18,12 @@
         <div class="flex">
 
             {{-- Sidebar --}}
-            <aside class="w-72 min-h-screen bg-white shadow-xl rounded-r-[35px] p-6 hidden lg:block sticky top-0">
+            <aside id="main-sidebar" class="w-72 min-h-screen bg-white shadow-xl rounded-r-[35px] p-6 hidden lg:block sticky top-0 transition-all duration-300 overflow-hidden">
                 <div class="flex items-center gap-3 mb-10">
-                    <img src="{{ asset('images/logo.png') }}" class="w-12 h-12 object-contain" alt="Logo">
+                    <img src="{{ asset('images/logo.png') }}" class="w-14 h-14 object-contain" alt="Logo">
                     <div>
-                        <h2 class="text-2xl font-bold text-red-700 uppercase leading-none">Mekarjaya</h2>
-                        <p class="text-sm text-gray-500">Coffee Admin</p>
+                        <h2 class="text-2xl font-black text-[#DA291C] uppercase leading-none tracking-tight">Mekarjaya</h2>
+                        <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold text-[10px]">Coffee Admin</p>
                     </div>
                 </div>
 
@@ -89,15 +91,22 @@
             </aside>
 
             {{-- Main Content --}}
-            <main class="flex-1 p-6 lg:p-10">
+            <main class="flex-1 p-6 lg:p-10 transition-all duration-300">
+
+                {{-- Toggle Sidebar Button (Desktop Only - Cashier Only) --}}
+                @if(request()->routeIs('cashier.*'))
+                <button id="sidebar-toggle" class="hidden lg:flex items-center justify-center w-12 h-12 bg-white shadow-md rounded-2xl mb-8 hover:bg-red-50 hover:text-red-700 transition border border-gray-100 group">
+                    <i data-lucide="menu" class="w-6 h-6 transition-transform group-hover:scale-110"></i>
+                </button>
+                @endif
 
                 {{-- Mobile top --}}
                 <div class="lg:hidden bg-white rounded-3xl p-4 shadow-md mb-6 flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <img src="{{ asset('images/logo.png') }}" class="w-10 h-10 object-contain" alt="Logo">
+                        <img src="{{ asset('images/logo.png') }}" class="w-12 h-12 object-contain" alt="Logo">
                         <div>
-                            <h2 class="text-lg font-bold text-red-700 uppercase leading-none">Mekarjaya</h2>
-                            <p class="text-xs text-gray-500">Coffee Admin</p>
+                            <h2 class="text-lg font-black text-[#DA291C] uppercase leading-none">Mekarjaya</h2>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Coffee Admin</p>
                         </div>
                     </div>
                     <div class="flex gap-2">
@@ -119,6 +128,23 @@
 
     <script>
         lucide.createIcons();
+
+        // Sidebar Toggle Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('main-sidebar');
+            const toggleBtn = document.getElementById('sidebar-toggle');
+
+            if (sidebar && toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    // Gunakan inline style dengan !important untuk mengoverride class Tailwind 'lg:block'
+                    if (window.getComputedStyle(sidebar).display === 'none') {
+                        sidebar.style.setProperty('display', 'block', 'important');
+                    } else {
+                        sidebar.style.setProperty('display', 'none', 'important');
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
