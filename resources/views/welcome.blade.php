@@ -9,6 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{-- Lucide Icons --}}
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         html {
             scroll-behavior: smooth;
@@ -58,7 +59,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-14 h-14 object-contain">
-                <h1 class="text-3xl font-black text-[#DA291C] uppercase tracking-tighter">Mekarjaya</h1>
+                <h1 class="text-3xl font-black text-[#DA291C] uppercase tracking-tighter font-poppins">Mekarjaya</h1>
             </div>
 
             <div class="hidden md:flex items-center gap-8 text-lg">
@@ -85,7 +86,7 @@
 
         <div class="absolute inset-0 flex items-center justify-center z-10 text-center px-6">
             <div class="max-w-4xl">
-                <h1 class="text-white text-5xl md:text-7xl font-light leading-tight mb-8">
+                <h1 class="text-white text-5xl md:text-7xl font-light leading-tight mb-8 font-poppins">
                     Mekarjaya, <br> Just for you!
                 </h1>
                 <p class="text-white/90 text-xl md:text-3xl mb-10 font-serif">
@@ -259,7 +260,7 @@
     {{-- Gallery / Suasana --}}
     <section id="gallery" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-5xl font-bold text-red-700 mb-16 reveal">Suasana Mekarjaya</h2>
+            <h2 class="text-5xl font-bold text-red-700 mb-16 reveal font-poppins">Suasana Mekarjaya</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="overflow-hidden rounded-[40px] shadow-lg reveal delay-100">
                     <img src="{{ asset('images/gallery_1.png') }}" alt="Interior 1"
@@ -336,7 +337,7 @@
             <div class="reveal">
                 <div class="flex items-center gap-3 mb-6">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-14 h-14">
-                    <h2 class="text-3xl font-bold uppercase tracking-widest text-[#DA291C]">Mekarjaya</h2>
+                    <h2 class="text-3xl font-bold uppercase tracking-widest text-[#DA291C] font-poppins">Mekarjaya</h2>
                 </div>
                 <p class="text-gray-400 text-lg leading-relaxed">
                     Lebih dari sekadar kopi. Kami menyajikan kenyamanan dan cerita di setiap cangkir yang Anda nikmati.
@@ -362,16 +363,19 @@
                 <h3 class="text-2xl font-bold mb-8 border-b border-gray-700 pb-2 inline-block">Jam Operasional</h3>
                 <ul class="space-y-4 text-lg">
                     <li class="flex justify-between">
-                        <span class="text-gray-400">Senin - Jumat</span>
-                        <span class="font-semibold">09:00 - 22:00</span>
+                        <span class="text-gray-400">Selasa - Jumat</span>
+                        <span class="font-semibold">09.00 - 21.00</span>
                     </li>
                     <li class="flex justify-between">
                         <span class="text-gray-400">Sabtu - Minggu</span>
-                        <span class="font-semibold">08:00 - 23:00</span>
+                        <span class="font-semibold">09.00 - 22.00</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="text-gray-400">Senin Libur</span>
                     </li>
                 </ul>
                 <div class="mt-8 pt-6 border-t border-gray-800">
-                    <p class="text-sm italic text-red-400 font-medium">Buka setiap hari kecuali hari besar tertentu.</p>
+                    <p class="text-sm italic text-red-400 font-medium">Buka setiap hari kecuali hari senin dan hari besar tertentu.</p>
                 </div>
             </div>
 

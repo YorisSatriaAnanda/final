@@ -3,107 +3,54 @@
 @section('content')
 <style>
     @media print {
-        /* Hide UI elements */
-        aside, nav, .lg\:hidden, .flex.gap-3, button, a.bg-red-700, .text-gray-500.mt-1 {
-            display: none !important;
-        }
-
-        /* Reset layout for 58mm */
-        body, .min-h-screen, .flex, main {
-            background: white !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            display: block !important;
-            width: 58mm !important;
-        }
-
-        .max-w-5xl {
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* Receipt styling */
-        .bg-white {
-            box-shadow: none !important;
-            border: none !important;
-            border-radius: 0 !important;
-            width: 58mm !important;
-        }
-
-        .p-8 {
-            padding: 5mm 2mm !important;
-        }
-
-        /* Typography for thermal paper */
-        h1, h2, h3, p, span, td, th {
-            font-family: 'Courier New', Courier, monospace !important;
-            color: black !important;
-        }
-
-        h2.text-3xl {
-            font-size: 14pt !important;
-            text-align: center !important;
-            margin-bottom: 2mm !important;
-        }
-
-        .text-3xl.font-bold, .text-xl.font-bold {
-            font-size: 11pt !important;
-        }
-
-        .text-sm, .text-gray-500 {
-            font-size: 9pt !important;
-        }
-
-        table {
-            width: 100% !important;
-            font-size: 9pt !important;
-            border-collapse: collapse !important;
-        }
-
-        th, td {
-            padding: 1mm 0 !important;
-            border-bottom: 1px dashed #000 !important;
-        }
-
-        .border-b {
-            border-bottom: 1px dashed #000 !important;
-        }
-
-        .flex.justify-between {
-            display: flex !important;
-            justify-content: space-between !important;
-            margin-bottom: 1mm !important;
-        }
-
-        /* Force black text for contrast */
-        * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-            color: black !important;
-        }
-
         @page {
             size: 58mm auto;
+            margin: 0mm;
+        }
+        body {
             margin: 0;
+            padding: 0;
+            background: #fff;
         }
-
-        /* Divider */
-        .receipt-divider {
-            border-top: 1px dashed #000;
-            margin: 3mm 0;
+        .screen-only {
+            display: none !important;
         }
-
         .print-only {
             display: block !important;
+            width: 58mm;
+            padding: 2mm;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 10px;
+            color: #000;
+            line-height: 1.2;
         }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .font-bold { font-weight: bold; }
+        .mb-1 { margin-bottom: 2px; }
+        .mb-2 { margin-bottom: 4px; }
+        .dashed-line {
+            border-top: 1px dashed #000;
+            margin: 4px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            vertical-align: top;
+            padding: 1px 0;
+        }
+        .w-full { width: 100%; }
     }
-
-    .print-only {
-        display: none;
+    @media screen {
+        .print-only {
+            display: none;
+        }
     }
 </style>
 
+<div class="screen-only">
     @if(session('success'))
         <div class="mb-6 rounded-2xl bg-green-100 text-green-700 px-5 py-4">
             {{ session('success') }}
@@ -123,7 +70,7 @@
                     + Transaksi Baru
                 </a>
 
-                <button onclick="window.print()"
+                <button onclick="printStruk()"
                         class="bg-gray-900 text-white px-5 py-3 rounded-2xl hover:bg-black transition shadow-md">
                     Print Struk
                 </button>
@@ -150,7 +97,7 @@
                 <div>
                     <p class="text-sm text-gray-500 mb-2">Customer</p>
                     <h3 class="text-xl font-bold text-gray-900">
-                        {{ $order->customer_name ?: 'Walk In Customer' }}
+                        {{ $order->customer_name ?: 'Walk In' }}
                     </h3>
                 </div>
 
@@ -161,6 +108,13 @@
                     </h3>
                 </div>
             </div>
+
+            @if($order->notes)
+            <div class="p-8 border-b border-gray-100 bg-gray-50">
+                <p class="text-sm text-gray-500 mb-2">Catatan</p>
+                <p class="text-base font-medium text-gray-900">{{ $order->notes }}</p>
+            </div>
+            @endif
 
             <div class="p-8">
                 <div class="overflow-x-auto">
@@ -217,18 +171,113 @@
                             <span class="font-semibold">Rp {{ number_format($order->paid_amount, 0, ',', '.') }}</span>
                         </div>
 
+                        @if($order->paid_amount - $order->total_price > 0)
+                            <div class="flex justify-between text-gray-600">
+                                <span>Kembali</span>
+                                <span class="font-semibold">Rp {{ number_format($order->paid_amount - $order->total_price, 0, ',', '.') }}</span>
+                            </div>
+                        @endif
                     </div>
-                </div>
-
-                {{-- Footer Struk (Print Only) --}}
-                <div class="print-only mt-8 text-center" style="font-family: 'Courier New', Courier, monospace; font-size: 9pt;">
-                    <p class="receipt-divider"></p>
-                    <p class="font-bold">Terima Kasih!</p>
-                    <p>Atas Kunjungan Anda</p>
-                    <p>{{ date('d/m/Y H:i') }}</p>
                 </div>
             </div>
         </div>
     </div>
+@php
+    $lineLength = 32;
+    $receipt = "";
+    
+    // Header
+    $receipt .= str_pad("Mekarjaya Coffee", $lineLength, " ", STR_PAD_BOTH) . "\n";
+    $receipt .= str_pad("Invoice Kasir", $lineLength, " ", STR_PAD_BOTH) . "\n";
+    $receipt .= str_repeat("-", $lineLength) . "\n";
+    
+    // Info
+    $receipt .= "Inv : " . $order->invoice_code . "\n";
+    $receipt .= "Date: " . $order->created_at->format('d/m/Y H:i') . "\n";
+    $receipt .= "Cust: " . substr($order->customer_name ?: 'Walk In', 0, 26) . "\n";
+    $receipt .= "Pay : " . strtoupper($order->payment_method) . "\n";
+    if ($order->notes) {
+        $receipt .= "Note: " . substr($order->notes, 0, 26) . "\n";
+    }
+    $receipt .= str_repeat("-", $lineLength) . "\n";
+    
+    // Items
+    foreach($order->items as $item) {
+        $name = substr($item->menu->name, 0, $lineLength);
+        $receipt .= $name . "\n";
+        
+        $qtyPrice = $item->qty . " x " . number_format($item->price, 0, ',', '.');
+        $subtotal = number_format($item->subtotal, 0, ',', '.');
+        
+        $spaceLen = $lineLength - strlen($qtyPrice) - strlen($subtotal);
+        if ($spaceLen < 1) $spaceLen = 1;
+        
+        $receipt .= $qtyPrice . str_repeat(" ", $spaceLen) . $subtotal . "\n";
+    }
+    
+    $receipt .= str_repeat("-", $lineLength) . "\n";
+    
+    // Summary
+    $subtotalLabel = "Subtotal";
+    $subtotalVal = number_format($order->total_price + $order->discount, 0, ',', '.');
+    $receipt .= $subtotalLabel . str_repeat(" ", max(1, $lineLength - strlen($subtotalLabel) - strlen($subtotalVal))) . $subtotalVal . "\n";
+    
+    if ($order->discount > 0) {
+        $discLabel = "Diskon";
+        if ($order->discount_type === 'percent') {
+            $discLabel .= " (" . (float)$order->discount_value . "%)";
+        }
+        $discVal = "-" . number_format($order->discount, 0, ',', '.');
+        $receipt .= $discLabel . str_repeat(" ", max(1, $lineLength - strlen($discLabel) - strlen($discVal))) . $discVal . "\n";
+    }
+    
+    $totalLabel = "Total";
+    $totalVal = number_format($order->total_price, 0, ',', '.');
+    $receipt .= $totalLabel . str_repeat(" ", max(1, $lineLength - strlen($totalLabel) - strlen($totalVal))) . $totalVal . "\n";
+    
+    $payLabel = "Bayar";
+    $payVal = number_format($order->paid_amount, 0, ',', '.');
+    $receipt .= $payLabel . str_repeat(" ", max(1, $lineLength - strlen($payLabel) - strlen($payVal))) . $payVal . "\n";
+    
+    if ($order->paid_amount - $order->total_price > 0) {
+        $changeLabel = "Kembali";
+        $changeVal = number_format($order->paid_amount - $order->total_price, 0, ',', '.');
+        $receipt .= $changeLabel . str_repeat(" ", max(1, $lineLength - strlen($changeLabel) - strlen($changeVal))) . $changeVal . "\n";
+    }
+    
+    $receipt .= str_repeat("-", $lineLength) . "\n";
+    $receipt .= str_pad("Terima Kasih!", $lineLength, " ", STR_PAD_BOTH) . "\n";
+    $receipt .= str_pad("Atas Kunjungan Anda", $lineLength, " ", STR_PAD_BOTH) . "\n";
+    
+    // Feed paper so the text clears the printer tear bar
+    $receipt .= "\n\n\n\n\n";
+    $receipt .= str_pad(".", $lineLength, " ", STR_PAD_BOTH) . "\n"; // End marker to prevent stripping
+@endphp
+
+<pre id="print-content" style="display: none;">{{ $receipt }}</pre>
+
+<script>
+    function printStruk() {
+        var printWindow = window.open('', '', 'height=600,width=400');
+        printWindow.document.write('<html><head><title>Print Receipt</title>');
+        printWindow.document.write('<style>');
+        printWindow.document.write('@page { margin: 0; size: 58mm auto; }');
+        // Use 10px font and 0 padding to ensure 32 chars fit within 58mm
+        printWindow.document.write('body { margin: 0; padding: 0; font-family: "Courier New", Courier, monospace; font-size: 10px; color: #000; background: #fff; }');
+        // white-space: pre prevents browser from wrapping text, forcing exact 32 char alignment
+        printWindow.document.write('pre { margin: 0; padding: 0; white-space: pre; }');
+        printWindow.document.write('</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write('<pre>' + document.getElementById('print-content').textContent + '</pre>');
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        
+        setTimeout(function() {
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        }, 250);
+    }
+</script>
 
 @endsection

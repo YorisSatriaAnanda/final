@@ -20,6 +20,7 @@ class Order extends Model
         'discount_type',
         'discount_value',
         'status',
+        'notes',
     ];
 
     /**

@@ -12,7 +12,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -57,7 +57,7 @@
                     <a href="/" class="transition-all hover:scale-110 duration-500 logo-glow">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-32 h-32 object-contain">
                     </a>
-                    <h1 class="text-white text-4xl font-extrabold mt-6 tracking-[0.2em] uppercase font-serif">Mekarjaya</h1>
+                    <h1 class="text-white text-4xl font-extrabold mt-6 tracking-[0.2em] uppercase font-poppins">Mekarjaya</h1>
                 </div>
 
                 <div class="w-full px-8 py-10 glass-panel backdrop-blur-3xl border border-red-500/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden sm:rounded-[3rem]">

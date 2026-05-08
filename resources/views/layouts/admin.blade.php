@@ -11,6 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{-- Lucide Icons --}}
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[#f6f6f6] text-gray-900 font-sans antialiased">
 
@@ -22,7 +23,7 @@
                 <div class="flex items-center gap-3 mb-10">
                     <img src="{{ asset('images/logo.png') }}" class="w-14 h-14 object-contain" alt="Logo">
                     <div>
-                        <h2 class="text-2xl font-black text-[#DA291C] uppercase leading-none tracking-tight">Mekarjaya</h2>
+                        <h2 class="text-2xl font-black text-[#DA291C] uppercase leading-none tracking-tight font-poppins">Mekarjaya</h2>
                         <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold text-[10px]">Coffee Admin</p>
                     </div>
                 </div>
@@ -98,7 +99,7 @@
                     <div class="flex items-center gap-3">
                         <img src="{{ asset('images/logo.png') }}" class="w-12 h-12 object-contain" alt="Logo">
                         <div>
-                            <h2 class="text-lg font-black text-[#DA291C] uppercase leading-none">Mekarjaya</h2>
+                            <h2 class="text-lg font-black text-[#DA291C] uppercase leading-none font-poppins">Mekarjaya</h2>
                             <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Coffee Admin</p>
                         </div>
                     </div>

@@ -159,6 +159,7 @@ class CashierController extends Controller
             'paid_amount' => 'required|integer|min:0',
             'discount_value' => 'nullable|numeric|min:0',
             'discount_type' => 'nullable|in:fixed,percent',
+            'notes' => 'nullable|string|max:1000',
         ]);
 
         $cart = session()->get('cart', []);
@@ -200,6 +201,7 @@ class CashierController extends Controller
                 'paid_amount'    => $request->paid_amount,
                 'change_amount'  => $request->paid_amount - $totalPrice,
                 'status'         => 'paid',
+                'notes'          => $request->notes,
             ]);
 
             foreach ($cart as $item) {

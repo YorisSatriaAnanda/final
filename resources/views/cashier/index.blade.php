@@ -251,14 +251,20 @@
                         </div>
 
                         <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Catatan (Opsional)</label>
+                            <textarea name="notes"
+                                      rows="2"
+                                      placeholder="Contoh: Pedas, es dipisah, dll..."
+                                      class="w-full rounded-2xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none">{{ old('notes') }}</textarea>
+                        </div>
+
+                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Metode Pembayaran</label>
                             <select name="payment_method"
                                     class="w-full rounded-2xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:outline-none">
                                 <option value="">Pilih pembayaran</option>
                                 <option value="cash" {{ old('payment_method') == 'cash' ? 'selected' : '' }}>Cash</option>
                                 <option value="qris" {{ old('payment_method') == 'qris' ? 'selected' : '' }}>QRIS</option>
-                                <option value="debit" {{ old('payment_method') == 'debit' ? 'selected' : '' }}>Debit</option>
-                                <option value="transfer" {{ old('payment_method') == 'transfer' ? 'selected' : '' }}>Transfer</option>
                             </select>
                         </div>
 
