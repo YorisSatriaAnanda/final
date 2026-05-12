@@ -25,9 +25,17 @@ class OrderController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        $isAdminOrOwner = in_array(auth()->user()->role, ['admin', 'owner']);
+        
         $todayOrders = Order::whereDate('created_at', today())->count();
-        $todayRevenue = Order::whereDate('created_at', today())->sum('total_price');
-        $allRevenue = Order::sum('total_price');
+        
+        $todayRevenue = $isAdminOrOwner 
+            ? Order::whereDate('created_at', today())->sum('total_price') 
+            : null;
+            
+        $allRevenue = $isAdminOrOwner 
+            ? Order::sum('total_price') 
+            : null;
 
         return view('orders.index', compact(
             'orders',
@@ -35,7 +43,8 @@ class OrderController extends Controller
             'todayRevenue',
             'allRevenue',
             'search',
-            'date'
+            'date',
+            'isAdminOrOwner'
         ));
     }
 

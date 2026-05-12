@@ -16,6 +16,7 @@
     </div>
 
     {{-- Statistik Harian (Data dari ChatGPT) --}}
+    @if($isAdminOrOwner)
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div class="bg-white rounded-[28px] p-6 shadow-md border-l-8 border-red-700">
             <p class="text-gray-500 mb-2 font-medium">Transaksi Hari Ini</p>
@@ -29,6 +30,7 @@
             </h2>
         </div>
     </div>
+    @endif
 
     {{-- Statistik Inventori (Data dari VS Code) --}}
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
@@ -63,9 +65,11 @@
             <div class="bg-white rounded-[30px] p-6 shadow-md">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-900">Kategori Menu</h2>
+                    @if(auth()->user()->role === 'admin')
                     <a href="{{ route('categories.index') }}" class="text-red-700 font-semibold hover:underline">
                         Lihat Semua
                     </a>
+                    @endif
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -86,9 +90,11 @@
             <div class="bg-white rounded-[30px] p-6 shadow-md">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-900">Menu Terbaru</h2>
+                    @if(auth()->user()->role === 'admin')
                     <a href="{{ route('menus.index') }}" class="text-red-700 font-semibold hover:underline">
                         Kelola Menu
                     </a>
+                    @endif
                 </div>
 
                 <div class="overflow-x-auto">
@@ -154,6 +160,7 @@
         {{-- Kanan --}}
         <div class="space-y-8">
 
+            @if(auth()->user()->role === 'admin')
             {{-- Quick action --}}
             <div class="bg-red-700 text-white rounded-[30px] p-6 shadow-md">
                 <h2 class="text-2xl font-bold mb-3">Quick Action</h2>
@@ -175,6 +182,7 @@
                     </a>
                 </div>
             </div>
+            @endif
 
             {{-- Best seller --}}
             <div class="bg-white rounded-[30px] p-6 shadow-md">

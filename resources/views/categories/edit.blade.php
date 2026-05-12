@@ -7,15 +7,7 @@
         <p class="text-gray-500 mt-1">Perbarui data kategori menu.</p>
     </div>
 
-    @if ($errors->any())
-        <div class="mb-6 rounded-2xl bg-red-100 text-red-700 px-5 py-4">
-            <ul class="list-disc pl-5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
 
     <div class="bg-white rounded-[30px] shadow-md p-8 max-w-2xl">
         <form action="{{ route('categories.update', $category) }}" method="POST" class="space-y-6">
@@ -27,7 +19,10 @@
                 <input type="text"
                        name="name"
                        value="{{ old('name', $category->name) }}"
-                       class="w-full rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                       class="w-full rounded-2xl border {{ $errors->has('name') ? 'border-red-500' : 'border-gray-200' }} px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                @error('name')
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="flex gap-3">

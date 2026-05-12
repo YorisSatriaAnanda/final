@@ -53,7 +53,7 @@ class MenuController extends Controller
 
         $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:menus,name',
             'price' => 'required|numeric|min:0',
             'discount_type' => 'nullable|in:percent,fixed',
             'discount_amount' => 'nullable|numeric|min:0',
@@ -102,7 +102,7 @@ class MenuController extends Controller
 
         $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:menus,name,' . $menu->id,
             'price' => 'required|numeric|min:0',
             'discount_type' => 'nullable|in:percent,fixed',
             'discount_amount' => 'nullable|numeric|min:0',

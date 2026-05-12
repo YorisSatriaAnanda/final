@@ -14,6 +14,7 @@
             <h2 class="text-4xl font-bold text-red-700">{{ $todayOrders }}</h2>
         </div>
 
+        @if($isAdminOrOwner)
         <div class="bg-white rounded-[28px] p-6 shadow-md">
             <p class="text-gray-500 mb-2">Omset Hari Ini</p>
             <h2 class="text-3xl font-bold text-red-700">
@@ -27,6 +28,7 @@
                 Rp {{ number_format($allRevenue, 0, ',', '.') }}
             </h2>
         </div>
+        @endif
     </div>
 
     {{-- Filter --}}

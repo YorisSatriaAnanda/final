@@ -7,15 +7,7 @@
         <p class="text-gray-500 mt-1">Tambahkan menu baru ke coffee shop kamu.</p>
     </div>
 
-    @if ($errors->any())
-        <div class="mb-6 rounded-2xl bg-red-100 text-red-700 px-5 py-4">
-            <ul class="list-disc pl-5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
 
     <div class="bg-white rounded-[30px] shadow-md p-8 max-w-3xl">
         <form action="{{ route('menus.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
@@ -24,7 +16,7 @@
             <div>
                 <label class="block text-gray-700 font-medium mb-2">Kategori</label>
                 <select name="category_id"
-                        class="w-full rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                        class="w-full rounded-2xl border {{ $errors->has('category_id') ? 'border-red-500' : 'border-gray-200' }} px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
                     <option value="">Pilih kategori</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -32,6 +24,9 @@
                         </option>
                     @endforeach
                 </select>
+                @error('category_id')
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
+                @enderror
             </div>
 
             <div>
@@ -40,7 +35,10 @@
                        name="name"
                        value="{{ old('name') }}"
                        placeholder="Contoh: Es Kopi Susu"
-                       class="w-full rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                       class="w-full rounded-2xl border {{ $errors->has('name') ? 'border-red-500' : 'border-gray-200' }} px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                @error('name')
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -50,7 +48,10 @@
                            name="price"
                            value="{{ old('price') }}"
                            placeholder="Contoh: 18.000"
-                           class="w-full rupiah-input rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                           class="w-full rupiah-input rounded-2xl border {{ $errors->has('price') ? 'border-red-500' : 'border-gray-200' }} px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    @error('price')
+                        <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div>
@@ -60,7 +61,10 @@
                            value="{{ old('stock', 0) }}"
                            min="0"
                            placeholder="Contoh: 20"
-                           class="w-full rounded-2xl border border-gray-200 px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                           class="w-full rounded-2xl border {{ $errors->has('stock') ? 'border-red-500' : 'border-gray-200' }} px-5 py-4 focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    @error('stock')
+                        <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 

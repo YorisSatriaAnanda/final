@@ -5,6 +5,19 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-6" onsubmit="handleLoginSubmit(this)">
         @csrf
 
+        <!-- Quick Login Buttons for Testing -->
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <button type="button" onclick="fillLogin('admin@admin.com', 'password', this)" class="quick-login-btn text-xs bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl transition-all duration-300 font-medium tracking-wide border border-transparent">
+                Admin
+            </button>
+            <button type="button" onclick="fillLogin('kasir@kasir.com', 'password', this)" class="quick-login-btn text-xs bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl transition-all duration-300 font-medium tracking-wide border border-transparent">
+                Kasir
+            </button>
+            <button type="button" onclick="fillLogin('owner@owner.com', 'password', this)" class="quick-login-btn text-xs bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl transition-all duration-300 font-medium tracking-wide border border-transparent">
+                Owner
+            </button>
+        </div>
+
         <!-- Email Address -->
         <div class="group">
             <x-input-label for="email" :value="__('Email')" class="text-white/80 group-focus-within:text-red-500 transition-colors duration-300 font-semibold text-sm uppercase tracking-widest pl-1" />
@@ -54,6 +67,24 @@
             btn.classList.add('opacity-80', 'cursor-not-allowed');
             btnText.innerText = 'Memproses...';
             btnIcon.style.display = 'none';
+        }
+
+        function fillLogin(email, password, btn) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+
+            // Kembalikan semua tombol ke warna semula
+            const allBtns = document.querySelectorAll('.quick-login-btn');
+            allBtns.forEach(b => {
+                b.classList.remove('bg-red-600', 'border-red-400', 'shadow-[0_0_15px_rgba(220,38,38,0.5)]');
+                b.classList.add('bg-white/10', 'border-transparent');
+            });
+
+            // Beri warna merah untuk tombol yang sedang aktif
+            if (btn) {
+                btn.classList.remove('bg-white/10', 'border-transparent');
+                btn.classList.add('bg-red-600', 'border-red-400', 'shadow-[0_0_15px_rgba(220,38,38,0.5)]');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {

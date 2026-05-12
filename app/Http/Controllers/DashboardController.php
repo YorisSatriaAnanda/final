@@ -27,14 +27,16 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // 🔥 Tambahan data laporan dashboard
-        $todayRevenue = Order::whereDate('created_at', today())
-            ->where('status', 'paid')
-            ->sum('total_price');
+        // 🔥 Tambahan data laporan dashboard (Hanya untuk Admin & Owner)
+        $isAdminOrOwner = in_array(auth()->user()->role, ['admin', 'owner']);
+        
+        $todayRevenue = $isAdminOrOwner 
+            ? Order::whereDate('created_at', today())->where('status', 'paid')->sum('total_price') 
+            : null;
 
-        $todayTransactions = Order::whereDate('created_at', today())
-            ->where('status', 'paid')
-            ->count();
+        $todayTransactions = $isAdminOrOwner 
+            ? Order::whereDate('created_at', today())->where('status', 'paid')->count() 
+            : null;
 
         return view('dashboard', compact(
             'totalCategories',
@@ -45,7 +47,8 @@ class DashboardController extends Controller
             'latestMenus',
             'bestSellers',
             'todayRevenue',
-            'todayTransactions'
+            'todayTransactions',
+            'isAdminOrOwner'
         ));
     }
 }

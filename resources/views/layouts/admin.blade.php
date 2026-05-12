@@ -35,6 +35,7 @@
                         <span class="font-medium">Dashboard</span>
                     </a>
 
+                    @if(auth()->user()->role === 'admin')
                     <a href="{{ route('categories.index') }}"
                        class="flex items-center gap-3 px-5 py-4 rounded-2xl {{ request()->routeIs('categories.*') ? 'bg-red-700 text-white shadow-md' : 'text-gray-700 hover:bg-red-50 hover:text-red-700' }} transition">
                         <i data-lucide="folder" class="w-5 h-5"></i>
@@ -46,13 +47,16 @@
                         <i data-lucide="coffee" class="w-5 h-5"></i>
                         <span class="font-medium">Menu</span>
                     </a>
+                    @endif
 
                     {{-- Menu Kasir --}}
+                    @if(auth()->user()->role === 'kasir')
                     <a href="{{ route('cashier.index') }}"
                        class="flex items-center gap-3 px-5 py-4 rounded-2xl {{ request()->routeIs('cashier.*') ? 'bg-red-700 text-white shadow-md' : 'text-gray-700 hover:bg-red-50 hover:text-red-700' }} transition">
                         <i data-lucide="receipt" class="w-5 h-5"></i>
                         <span class="font-medium">Kasir</span>
                     </a>
+                    @endif
 
                     {{-- Menu Transaksi (History) --}}
                     <a href="{{ route('orders.index') }}"
@@ -62,6 +66,7 @@
                     </a>
 
                     {{-- Menu Laporan --}}
+                    @if(in_array(auth()->user()->role, ['admin', 'owner']))
                     <a href="{{ route('reports.index') }}"
                        class="flex items-center gap-3 px-5 py-4 rounded-2xl {{ request()->routeIs('reports.*') ? 'bg-red-700 text-white shadow-md' : 'text-gray-700 hover:bg-red-50 hover:text-red-700' }} transition">
                         <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
@@ -74,6 +79,7 @@
                         <i data-lucide="message-square" class="w-5 h-5"></i>
                         <span class="font-medium">Ulasan</span>
                     </a>
+                    @endif
 
                     <a href="{{ url('/') }}"
                        class="flex items-center gap-3 px-5 py-4 rounded-2xl text-gray-700 hover:bg-red-50 hover:text-red-700 transition">
@@ -108,10 +114,12 @@
                            class="bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm border border-gray-200">
                             <i data-lucide="clipboard-list" class="w-5 h-5"></i>
                         </a>
+                        @if(auth()->user()->role === 'kasir')
                         <a href="{{ route('cashier.index') }}"
                            class="bg-red-700 text-white px-4 py-2 rounded-xl text-sm">
                             Kasir
                         </a>
+                        @endif
                     </div>
                 </div>
 

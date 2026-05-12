@@ -33,7 +33,7 @@ Route::get('/', function () {
     return view('welcome', compact('categories', 'bestSellers'));
 });
 
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::post('/reviews', [ReviewController::class, 'store'])->middleware('throttle:3,1')->name('reviews.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -52,25 +52,31 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Resource Management (Menu & Kategori)
-    Route::resource('categories', CategoryController::class);
-    Route::resource('menus', MenuController::class);
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('categories', CategoryController::class);
+        Route::resource('menus', MenuController::class);
+    });
 
     // Order History Management (Riwayat Pesanan Umum)
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::middleware('role:admin,kasir,owner')->group(function () {
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    });
 
     // --- LAPORAN PENJUALAN & EXCEL ---
-    Route::prefix('reports')->name('reports.')->group(function () {
+    Route::middleware('role:admin,owner')->prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
         Route::get('/export/excel', [ReportController::class, 'exportExcel'])->name('export.excel');
     });
 
     // Reviews (Admin)
-    Route::get('/admin/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
-    Route::delete('/admin/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+    Route::middleware('role:admin,owner')->group(function () {
+        Route::get('/admin/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+        Route::delete('/admin/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+    });
 
     // Cashier System
-    Route::prefix('cashier')->name('cashier.')->group(function () {
+    Route::middleware('role:kasir')->prefix('cashier')->name('cashier.')->group(function () {
         Route::get('/', [CashierController::class, 'index'])->name('index');
         Route::post('/add/{id}', [CashierController::class, 'addToCart'])->name('add');
         Route::post('/increase/{id}', [CashierController::class, 'increaseQty'])->name('increase');
