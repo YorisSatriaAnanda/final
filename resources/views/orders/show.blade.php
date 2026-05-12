@@ -93,6 +93,13 @@
                     <h3 class="text-xl font-bold text-gray-900">
                         {{ $order->customer_name ?: 'Walk In Customer' }}
                     </h3>
+                    
+                    @if($order->notes)
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500 mb-2">Catatan</p>
+                            <p class="text-md text-gray-800 italic">"{{ $order->notes }}"</p>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="md:text-right">
@@ -147,8 +154,25 @@
                 <div class="mt-10 flex justify-end">
                     <div class="w-full max-w-md space-y-4">
                         <div class="flex justify-between text-gray-600">
-                            <span>Total</span>
-                            <span class="font-semibold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
+                            <span>Subtotal</span>
+                            <span class="font-semibold">Rp {{ number_format($order->total_price + $order->discount, 0, ',', '.') }}</span>
+                        </div>
+
+                        @if($order->discount > 0)
+                            <div class="flex justify-between text-gray-600">
+                                <span>
+                                    Diskon 
+                                    @if($order->discount_type === 'percent')
+                                        ({{ (float)$order->discount_value }}%)
+                                    @endif
+                                </span>
+                                <span class="font-semibold">- Rp {{ number_format($order->discount, 0, ',', '.') }}</span>
+                            </div>
+                        @endif
+
+                        <div class="flex justify-between text-gray-900 font-bold border-t pt-4">
+                            <span>Total Akhir</span>
+                            <span>Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
                         </div>
 
                         <div class="flex justify-between text-gray-600">
@@ -180,6 +204,9 @@
     $receipt .= "Inv : " . $order->invoice_code . "\n";
     $receipt .= "Date: " . $order->created_at->format('d/m/Y H:i') . "\n";
     $receipt .= "Cust: " . substr($order->customer_name ?: 'Walk In', 0, 26) . "\n";
+    if ($order->notes) {
+        $receipt .= "Note: " . substr($order->notes, 0, 26) . "\n";
+    }
     $receipt .= "Pay : " . strtoupper($order->payment_method) . "\n";
     $receipt .= "Stat: " . strtoupper($order->status) . "\n";
     $receipt .= str_repeat("-", $lineLength) . "\n";
@@ -202,8 +229,17 @@
     
     // Summary
     $subtotalLabel = "Subtotal";
-    $subtotalVal = number_format($order->total_price, 0, ',', '.');
+    $subtotalVal = number_format($order->total_price + $order->discount, 0, ',', '.');
     $receipt .= $subtotalLabel . str_repeat(" ", max(1, $lineLength - strlen($subtotalLabel) - strlen($subtotalVal))) . $subtotalVal . "\n";
+    
+    if ($order->discount > 0) {
+        $discLabel = "Diskon";
+        if ($order->discount_type === 'percent') {
+            $discLabel .= " (" . (float)$order->discount_value . "%)";
+        }
+        $discVal = "-" . number_format($order->discount, 0, ',', '.');
+        $receipt .= $discLabel . str_repeat(" ", max(1, $lineLength - strlen($discLabel) - strlen($discVal))) . $discVal . "\n";
+    }
     
     $totalLabel = "Total";
     $totalVal = number_format($order->total_price, 0, ',', '.');

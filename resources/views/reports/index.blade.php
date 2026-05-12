@@ -196,11 +196,19 @@
                         @foreach ($latestOrders as $order)
                             <tr class="border-b last:border-0 hover:bg-red-50/30 transition">
                                 <td class="py-4 font-semibold text-gray-900">{{ $order->invoice_code ?? $order->invoice ?? '-' }}</td>
-                                <td class="py-4">{{ $order->customer_name ?: 'Walk In Customer' }}</td>
+                                <td class="py-4">
+                                    {{ $order->customer_name ?: 'Walk In Customer' }}
+                                    @if($order->notes)
+                                        <div class="text-xs text-gray-500 mt-1 italic break-words max-w-[200px]">Catatan: {{ $order->notes }}</div>
+                                    @endif
+                                </td>
                                 <td class="py-4 uppercase">{{ $order->payment_method }}</td>
                                 <td class="py-4">{{ $order->created_at ? $order->created_at->format('d M Y H:i') : '-' }}</td>
-                                <td class="py-4 text-right font-bold text-red-700">
-                                    Rp {{ number_format($order->total_price, 0, ',', '.') }}
+                                <td class="py-4 text-right">
+                                    <div class="font-bold text-red-700">Rp {{ number_format($order->total_price, 0, ',', '.') }}</div>
+                                    @if($order->discount > 0)
+                                        <div class="text-[11px] text-gray-500 mt-1">Diskon: Rp {{ number_format($order->discount, 0, ',', '.') }}</div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

@@ -94,6 +94,9 @@
 
                             <td class="px-6 py-4">
                                 {{ $order->customer_name ?: 'Walk In Customer' }}
+                                @if($order->notes)
+                                    <div class="text-xs text-gray-500 mt-1 italic break-words max-w-[200px]">Catatan: {{ $order->notes }}</div>
+                                @endif
                             </td>
 
                             <td class="px-6 py-4">
@@ -127,8 +130,11 @@
                                 @endif
                             </td>
 
-                            <td class="px-6 py-4 font-bold text-gray-900">
-                                Rp {{ number_format($order->total_price, 0, ',', '.') }}
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-gray-900">Rp {{ number_format($order->total_price, 0, ',', '.') }}</div>
+                                @if($order->discount > 0)
+                                    <div class="text-xs text-red-500 mt-1">Diskon: Rp {{ number_format($order->discount, 0, ',', '.') }}</div>
+                                @endif
                             </td>
 
                             <td class="px-6 py-4">

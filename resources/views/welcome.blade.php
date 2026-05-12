@@ -63,7 +63,7 @@
             </div>
 
             <div class="hidden md:flex items-center gap-8 text-lg">
-                <a href="#home" class="hover:text-red-700">Home</a>
+                <a href="#hero" class="hover:text-red-700">Home</a>
                 <a href="#about" class="hover:text-red-700">About</a>
                 <a href="#menu" class="hover:text-red-700">Menu</a>
                 <a href="#ulasan" class="hover:text-red-700">Ulasan</a>
@@ -90,7 +90,7 @@
                     Mekarjaya, <br> Just for you!
                 </h1>
                 <p class="text-white/90 text-xl md:text-3xl mb-10 font-serif">
-                    Mekar Jaya Coffee menyajikan kopi berkualitas <br>
+                    Mekarjaya Coffee menyajikan kopi berkualitas <br>
                     dengan suasana nyaman dan minimalis.
                 </p>
                 <a href="#menu" class="bg-white text-gray-900 px-10 py-4 rounded-2xl text-2xl shadow hover:bg-gray-200">
@@ -118,7 +118,7 @@
                     Just For You <span class="text-gray-800 text-xl">Every cup tells a story</span>
                 </p>
                 <p class="text-xl leading-relaxed mb-6">
-                    Mekar Jaya Coffee adalah tempat di mana aroma kopi segar bertemu dengan suasana hangat.
+                    Mekarjaya Coffee adalah tempat di mana aroma kopi segar bertemu dengan suasana hangat.
                     Kami menghadirkan kopi berkualitas dari biji pilihan, diseduh dengan penuh perhatian untuk
                     menciptakan rasa terbaik di setiap cangkir.
                 </p>
@@ -343,17 +343,22 @@
                     Lebih dari sekadar kopi. Kami menyajikan kenyamanan dan cerita di setiap cangkir yang Anda nikmati.
                 </p>
                 <div class="flex gap-4 mt-8">
-                    <a href="#"
-                        class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 transition">
-                        <i data-lucide="instagram" class="w-5 h-5"></i>
+                    {{-- Instagram --}}
+                    <a href="https://www.instagram.com/mekarjayacoffee.id?igsh=YXB2djJ6cmF1dnp" target="_blank"
+                        class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-[#E1306C] transition shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                     </a>
-                    <a href="#"
-                        class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 transition">
-                        <i data-lucide="facebook" class="w-5 h-5"></i>
+                    
+                    {{-- TikTok --}}
+                    <a href="https://www.tiktok.com/@mekarjayacoffee?_r=1&_t=ZS-96BBFLvMgem" target="_blank"
+                        class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-[#00f2fe] transition shadow-lg group">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-current group-hover:text-black transition" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.12-1.02 4.13-2.5 5.57-1.46 1.45-3.44 2.32-5.41 2.56-2.31.25-4.72-.08-6.72-1.28-1.97-1.16-3.35-2.92-3.92-5.02-.6-2.13-.38-4.43.58-6.38 1.01-2.03 2.75-3.56 4.9-4.2 2.14-.65 4.54-.53 6.55.33.05.51.05 1.02.05 1.53-.02 1.08-.03 2.17-.05 3.25-1.12-.51-2.42-.64-3.62-.35-1.18.27-2.18 1.05-2.73 2.08-.54 1.04-.66 2.27-.33 3.39.31 1.1.99 2.05 1.94 2.62 1.02.59 2.26.74 3.39.46 1.25-.3 2.3-1.18 2.82-2.33.28-.62.4-1.3.4-1.99.01-4.8.01-9.61 0-14.41z"/></svg>
                     </a>
-                    <a href="#"
-                        class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 transition">
-                        <i data-lucide="twitter" class="w-5 h-5"></i>
+
+                    {{-- Grab --}}
+                    <a href="https://r.grab.com/g/6-20260508_102728_b25a5d1382424678b4b7878cf29a8392_MEXMPS-6-C7VATLAZUFWWTN" target="_blank"
+                        class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-[#00B14F] transition shadow-lg">
+                        <span class="font-black text-[10px] tracking-tight">Grab</span>
                     </a>
                 </div>
             </div>
@@ -385,15 +390,15 @@
                 <ul class="space-y-4 text-lg text-gray-400">
                     <li class="flex gap-3">
                         <i data-lucide="map-pin" class="w-6 h-6 text-red-500 shrink-0"></i>
-                        <span>Jl. Pajajaran No. 123, Bogor, Jawa Barat.</span>
+                        <span>Komplek Mekarbaru Blok E4, Mekarjaya, Kec. Ciomas, Kabupaten Bogor, Jawa Barat</span>
                     </li>
                     <li class="flex gap-3">
                         <i data-lucide="phone" class="w-6 h-6 text-red-500 shrink-0"></i>
-                        <span>+62 812-3456-7890</span>
+                        <span>085163686991</span>
                     </li>
                     <li class="flex gap-3">
                         <i data-lucide="mail" class="w-6 h-6 text-red-500 shrink-0"></i>
-                        <span>hello@mekarjayacoffee.com</span>
+                        <span>coffeemekarjaya@gmail.com</span>
                     </li>
                 </ul>
             </div>

@@ -35,8 +35,10 @@ class OrdersExport implements FromCollection, WithHeadings, WithMapping, ShouldA
             'Metode Pembayaran',
             'Status',
             'Total Harga',
+            'Diskon',
             'Total Item',
             'Detail Menu',
+            'Catatan',
             'Tanggal',
         ];
     }
@@ -53,8 +55,10 @@ class OrdersExport implements FromCollection, WithHeadings, WithMapping, ShouldA
             strtoupper($order->payment_method),
             strtoupper($order->status),
             (int) $order->total_price,
+            (int) $order->discount,
             $order->items->sum('qty'),
             $menuDetails,
+            $order->notes ?: '-',
             $order->created_at->format('d-m-Y H:i:s'),
         ];
     }
