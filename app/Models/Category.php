@@ -19,4 +19,11 @@ class Category extends Model
         return $this->hasMany(Menu::class);
     }
 
+    /**
+     * Menggunakan slug untuk pencarian route model binding.
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
