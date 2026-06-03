@@ -9,4 +9,4 @@ cmds = [
 ]
 
 [start]
-cmd = "php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php-fpm -y /assets/php-fpm.conf & nginx -c /etc/nginx/nginx.conf"
+cmd = "bash start.sh"
