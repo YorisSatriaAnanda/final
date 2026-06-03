@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 # Jalankan migrasi dan cache Laravel
 php artisan migrate --force
